@@ -16,6 +16,7 @@ import { IListing } from "@/interfaces/IListing";
 import { listingSchema } from "@/schemas/listingSchema";
 import * as ImagePicker from "expo-image-picker";
 import { ImageSelectionList } from "@/components/modules/application";
+import useGetLocation from "@/hooks/useGetLocation";
 
 const initialValues: IListing = {
   category: "",
@@ -27,11 +28,21 @@ const initialValues: IListing = {
 
 const ListingScreen = () => {
   const [image, setImage] = useState<string[]>([]);
+  const { location } = useGetLocation();
+
+  const cords: { lat: any; long: any } = {
+    lat: location?.coords.latitude,
+    long: location?.coords.longitude,
+  };
+
+  console.log("====================================");
+  console.log(cords);
+  console.log("====================================");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
       allowsMultipleSelection: true,
@@ -46,6 +57,7 @@ const ListingScreen = () => {
   return (
     <>
       <FlatList
+        style={{ paddingTop: 10 }}
         data={[]}
         keyExtractor={(_, index) => index.toString()}
         showsVerticalScrollIndicator={false}
