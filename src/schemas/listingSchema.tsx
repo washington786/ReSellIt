@@ -5,4 +5,5 @@ export const listingSchema = yup.object().shape({
   price: yup.string().required("Invalid price"),
   category: yup.number().required("Select category"),
   description: yup.string().required("description required"),
+  images: yup.array().min(1, "Select at-least one image."),
 });
