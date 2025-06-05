@@ -6,8 +6,10 @@ import {
   UserCard,
 } from "@/components/modules/application";
 import { accountStyles } from "@/styles";
+import useTransition from "@/hooks/useTransition";
 
 const AccountScreen = () => {
+  const { onMessages, onMyList } = useTransition();
   return (
     <Scroller>
       <AccountItemsWrapper style={[accountStyles.con, accountStyles.spaceTop]}>
@@ -20,8 +22,8 @@ const AccountScreen = () => {
       </AccountItemsWrapper>
 
       <AccountItemsWrapper style={[accountStyles.con, accountStyles.spaceTop]}>
-        <AccountCard icon="list" title="My Listings" onPress={() => {}} />
-        <AccountCard icon="mail" title="My Messages" onPress={() => {}} />
+        <AccountCard icon="list" title="My Listings" onPress={onMyList} />
+        <AccountCard icon="mail" title="My Messages" onPress={onMessages} />
       </AccountItemsWrapper>
       <AccountItemsWrapper style={[accountStyles.con, accountStyles.spaceTop]}>
         <AccountCard icon="log-out" title="Log Out" onPress={() => {}} />

@@ -1,17 +1,25 @@
-import { StyleSheet, Text } from "react-native";
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { navigationTypes } from "@/types/navigationTypes";
+import { LoginScreen, RegisterScreen } from "@/screens";
+import { Welcome } from "@/pages/authentication";
+import AppStack from "./AppStack";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<navigationTypes>();
 
 const RootStack = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="" component={() => <Text>Hello</Text>} />
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="app"
+    >
+      <Stack.Screen name="welcome" component={Welcome} />
+      <Stack.Screen name="login" component={LoginScreen} />
+      <Stack.Screen name="register" component={RegisterScreen} />
+
+      <Stack.Screen name="app" component={AppStack} />
     </Stack.Navigator>
   );
 };
 
 export default RootStack;
-
-const styles = StyleSheet.create({});

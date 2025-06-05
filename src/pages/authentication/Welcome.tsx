@@ -2,16 +2,18 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from "react-native";
 import React from "react";
 import { RButton } from "@/components/common";
 import colors from "@/config/colors";
+import useTransition from "@/hooks/useTransition";
+import { Text } from "react-native-paper";
 
 const Welcome = () => {
   const { width } = useWindowDimensions();
+  const { onLogin, onRegister } = useTransition();
   return (
     <ImageBackground
       style={styles.container}
@@ -25,17 +27,17 @@ const Welcome = () => {
           resizeMethod="resize"
           style={{ width: width * 0.2, height: width * 0.2 }}
         />
-        <Text>Sell What You Don't Need</Text>
+        <Text variant="labelMedium">Sell What You Don't Need</Text>
       </View>
       <View style={styles.btnsCon}>
         <RButton
           title="login"
-          onPressButton={() => {}}
+          onPressButton={onLogin}
           styleBtn={styles.btnLogin}
         />
         <RButton
           title="register"
-          onPressButton={() => {}}
+          onPressButton={onRegister}
           styleBtn={styles.btnRegister}
         />
       </View>
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   btnsCon: {
-    flex: 0.2,
+    flex: 0.3,
     paddingHorizontal: 8,
     gap: 6,
   },
