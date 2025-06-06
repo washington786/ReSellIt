@@ -5,22 +5,18 @@ const endpoint = "/listings";
 
 export const fetchListings = async () => {
   try {
-    const res = await client.get(endpoint);
-    console.log("res: ", res);
-    return res.data;
+    const res = await client.get(`${endpoint}`);
+    return res;
   } catch (error) {
-    let status =
-      error instanceof Error
-        ? error.cause
-        : isAxiosError(error)
-        ? error.response?.status
-        : 403;
-    let message =
-      error instanceof Error
-        ? error.message
-        : isAxiosError(error)
-        ? error.response?.data
-        : "Something wrong happened";
-    console.log("error message: ", message, " - ", status);
+    if (isAxiosError(error)) {
+      const message = error.response?.data?.message || "Axios request failed";
+      throw new Error(message);
+    }
+
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+
+    throw new Error("Something went wrong");
   }
 };

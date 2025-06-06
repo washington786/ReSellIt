@@ -1,22 +1,39 @@
 import { FlatList, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
-import { RWrapper } from "@/components/common";
+import React, { useEffect } from "react";
+import { RLoader, RServerError, RWrapper } from "@/components/common";
 import { Card } from "@/components/modules/application";
 import useTransition from "@/hooks/useTransition";
 import { fetchListings } from "@/api/listings";
-import { IList } from "@/interfaces/IListing";
+import useApi from "@/hooks/useApi";
 
 const HomeScreen = () => {
   const { onListDetails } = useTransition();
-  const [listings, setListings] = useState<IList[]>([]);
+
+  const {
+    data: listings,
+    error,
+    isLoading,
+    request: loadList,
+  } = useApi({ apiFunc: fetchListings });
 
   useEffect(() => {
-    async function loadList() {
-      const list = await fetchListings();
-      setListings(list);
-    }
     loadList();
   }, []);
+
+  if (error) {
+    return (
+      <RServerError
+        title={
+          error === "Axios request failed" ? "Sorry something happened" : error
+        }
+        onPress={loadList}
+      />
+    );
+  }
+
+  if (isLoading) {
+    return <RLoader />;
+  }
 
   return (
     <RWrapper>

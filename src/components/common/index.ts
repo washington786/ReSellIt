@@ -5,6 +5,7 @@ import RInput from "./RInput";
 import RLoader from "./RLoader";
 import RLogo from "./RLogo";
 import RPicker from "./RPicker";
+import RServerError from "./RServerError";
 import RSwitch from "./RSwitch";
 import RText from "./RText";
 import RUpload from "./RUpload";
@@ -26,4 +27,5 @@ export {
   RLoader,
   RUpload,
   RImageCon,
+  RServerError,
 };

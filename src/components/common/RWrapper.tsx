@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import React, { FC, ReactNode } from "react";
 import colors from "@/config/colors";
 
 interface prop {
   children: ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
-const RWrapper: FC<prop> = ({ children }) => {
-  return <View style={styles.con}>{children}</View>;
+const RWrapper: FC<prop> = ({ children, style }) => {
+  return <View style={[styles.con, style]}>{children}</View>;
 };
 
 export default RWrapper;
