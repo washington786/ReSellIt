@@ -1,14 +1,14 @@
-import { FlatList, Image, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import {
   RButton,
-  RImageCon,
   RInput,
   RLoader,
+  RModal,
   RPicker,
+  RServerError,
   RText,
   RUpload,
-  Scroller,
 } from "@/components/common";
 import { auth_styles } from "@/styles";
 import { Formik } from "formik";
@@ -17,6 +17,8 @@ import { listingSchema } from "@/schemas/listingSchema";
 import * as ImagePicker from "expo-image-picker";
 import { ImageSelectionList } from "@/components/modules/application";
 import useGetLocation from "@/hooks/useGetLocation";
+import { createList, createListing } from "@/api/listings";
+import { listAddingData } from "@/utils/listAdding";
 
 const initialValues: IListing = {
   category: "",
@@ -27,7 +29,8 @@ const initialValues: IListing = {
 };
 
 const ListingScreen = () => {
-  const [image, setImage] = useState<string[]>([]);
+  // const [image, setImage] = useState<string[]>([]);
+  // const { values } = useFormikContext<any>();
   const { location } = useGetLocation();
 
   const cords: { lat: any; long: any } = {
@@ -35,24 +38,48 @@ const ListingScreen = () => {
     long: location?.coords.longitude,
   };
 
-  console.log("====================================");
-  console.log(cords);
-  console.log("====================================");
+  const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-      allowsMultipleSelection: true,
-    });
+  async function handleCreateList(values: IListing) {
+    setLoading(true);
+    setError("");
+    try {
+      const data = listAddingData({
+        values: values,
+        cords: cords,
+        image: values.images,
+      });
+      const res = await createListing({
+        data: data,
+        onUploadProgress: (progress: number) => {
+          setProgress(progress);
+        },
+      });
+      console.log("response: ", res);
 
-    if (!result.canceled) {
-      const urls = result.assets.map((item) => item.uri);
-      setImage((prev) => [...prev, ...urls]);
+      alert("success");
+    } catch (error: any) {
+      setLoading(false);
+      setError(error);
+      alert(error);
+    } finally {
+      setError("");
+      setLoading(false);
     }
-  };
+  }
+
+  if (error) {
+    return (
+      <RServerError
+        title={error.toString()}
+        onPress={() => {
+          setError("");
+        }}
+      />
+    );
+  }
 
   return (
     <>
@@ -66,7 +93,7 @@ const ListingScreen = () => {
           <>
             <Formik
               initialValues={initialValues}
-              onSubmit={() => {}}
+              onSubmit={(values) => handleCreateList(values)}
               validationSchema={listingSchema}
             >
               {({
@@ -77,18 +104,37 @@ const ListingScreen = () => {
                 handleChange,
                 setFieldTouched,
                 touched,
+                setFieldValue,
               }) => {
+                const pickImage = async () => {
+                  let result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ["images", "videos"],
+                    allowsEditing: false,
+                    aspect: [4, 3],
+                    quality: 1,
+                    allowsMultipleSelection: true,
+                  });
+
+                  if (!result.canceled) {
+                    const urls = result.assets.map((item) => item.uri);
+                    const currentImg = values.images || [];
+                    setFieldValue("images", [...currentImg, ...urls]);
+                  }
+                };
+
+                const removeImage = (uriToRemove: string) => {
+                  const filtered = values.images.filter(
+                    (uri: string) => uri !== uriToRemove
+                  );
+                  setFieldValue("images", filtered);
+                };
                 return (
                   <View style={auth_styles.content_con}>
                     <RUpload onPress={pickImage} title="Upload images" />
-                    {image.length > 0 && (
+                    {values.images?.length > 0 && (
                       <ImageSelectionList
-                        data={image}
-                        onRemoveImage={(imgUri) =>
-                          setImage((image) =>
-                            image.filter((uri) => uri !== imgUri)
-                          )
-                        }
+                        data={values.images}
+                        onRemoveImage={removeImage}
                       />
                     )}
                     {errors.images && (
@@ -99,7 +145,7 @@ const ListingScreen = () => {
                       autoCapitalize="none"
                       autoComplete="name"
                       autoCorrect={false}
-                      value={values.category}
+                      value={values.title}
                       onBlur={() => setFieldTouched("title")}
                       onChangeText={handleChange("title")}
                     />
@@ -110,6 +156,7 @@ const ListingScreen = () => {
                       placeholder="Price"
                       autoCapitalize="none"
                       autoCorrect={false}
+                      keyboardType="numeric"
                       value={values.price.toString()}
                       onBlur={() => setFieldTouched("price")}
                       onChangeText={handleChange("price")}
@@ -117,7 +164,7 @@ const ListingScreen = () => {
                     {errors.price && touched.price && (
                       <RText title={errors.price} />
                     )}
-                    <RPicker />
+                    <RPicker category="category" />
                     {errors.category && touched.category && (
                       <RText title={errors.category} />
                     )}
@@ -150,7 +197,9 @@ const ListingScreen = () => {
           </>
         }
       />
-      {/* <Scroller></Scroller> */}
+      {isLoading && progress !== 100 && (
+        <RModal isDone={progress === 100 ? true : false} progress={progress} />
+      )}
     </>
   );
 };

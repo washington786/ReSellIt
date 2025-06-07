@@ -1,18 +1,26 @@
 import { StyleSheet, View } from "react-native";
-import React, { useState } from "react";
+import React, { FC } from "react";
 import { Picker } from "@react-native-picker/picker";
 import colors from "@/config/colors";
+import { categories } from "@/utils/categories";
+import { useFormikContext } from "formik";
 
-const RPicker = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
+interface props {
+  category: string;
+}
+const RPicker: FC<props> = ({ category }) => {
+  const { setFieldValue, values } = useFormikContext<any>();
   return (
     <View style={styles.con}>
       <Picker
-        selectedValue={selectedLanguage}
-        onValueChange={(itemValue) => setSelectedLanguage(itemValue)}
+        selectedValue={values[category]}
+        onValueChange={(itemValue) => {
+          setFieldValue(category, itemValue);
+        }}
       >
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
+        {categories.map((cat) => (
+          <Picker.Item label={cat.label} value={cat.value} key={cat.value} />
+        ))}
       </Picker>
     </View>
   );

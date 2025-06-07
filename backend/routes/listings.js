@@ -53,7 +53,7 @@ router.post(
     // using a separate process.
     // auth,
     upload.array("images", config.get("maxImageCount")),
-    validateWith(schema),
+    // validateWith(schema),
     validateCategoryId,
     imageResize,
   ],

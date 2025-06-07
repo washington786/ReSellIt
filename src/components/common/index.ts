@@ -1,9 +1,11 @@
 import RButton from "./RButton";
 import RDivider from "./RDivider";
+import RHeader from "./RHeader";
 import RImageCon from "./RImageCon";
 import RInput from "./RInput";
 import RLoader from "./RLoader";
 import RLogo from "./RLogo";
+import RModal from "./RModal";
 import RPicker from "./RPicker";
 import RServerError from "./RServerError";
 import RSwitch from "./RSwitch";
@@ -28,4 +30,6 @@ export {
   RUpload,
   RImageCon,
   RServerError,
+  RModal,
+  RHeader,
 };
