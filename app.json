@@ -9,7 +9,7 @@
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "ios": {
@@ -36,6 +36,14 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow ResellIt to use your location."
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow Resellit to access your Face ID biometric data."
         }
       ]
     ]

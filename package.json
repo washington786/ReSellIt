@@ -10,6 +10,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-native-community/netinfo": "11.4.1",
     "@react-native-picker/picker": "2.11.0",
     "@react-native-vector-icons/material-design-icons": "^12.0.0",
     "@react-navigation/bottom-tabs": "^7.3.14",
@@ -19,11 +21,15 @@
     "apisauce": "^3.1.1",
     "axios": "^1.9.0",
     "expo": "53.0.10",
+    "expo-cached-image": "^53.0.9",
+    "expo-file-system": "~18.1.10",
     "expo-image-picker": "~16.1.4",
     "expo-location": "~18.1.5",
     "expo-status-bar": "~2.2.3",
     "formik": "^2.4.6",
+    "jwt-decode": "^4.0.0",
     "lottie-react-native": "7.2.2",
+    "moment": "^2.30.1",
     "react": "19.0.0",
     "react-native": "0.79.3",
     "react-native-blob-util": "^0.22.2",
@@ -32,7 +38,8 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "yup": "^1.6.1",
-    "expo-file-system": "~18.1.10"
+    "expo-secure-store": "~14.2.3",
+    "expo-splash-screen": "~0.30.9"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

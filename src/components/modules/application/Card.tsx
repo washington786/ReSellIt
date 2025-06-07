@@ -28,6 +28,7 @@ const Card: FC<ICard> = ({ image, subtitle, title, style, onPress }) => {
           resizeMethod="resize"
           style={styles.img}
         />
+        {/* <CachedImage source={{uri:image,}}/> */}
       </View>
       <View style={styles.txtCon}>
         <Text style={[styles.txt, styles.name]}>{title}</Text>

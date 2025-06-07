@@ -25,6 +25,7 @@ const AppStack = () => (
     <Tabs.Screen
       name="homeStack"
       component={HomeStack}
+
       options={{
         tabBarIcon: ({ color, focused, size }) => (
           <AntDesign
@@ -33,6 +34,7 @@ const AppStack = () => (
             color={focused ? color : colors.gray[400]}
           />
         ),
+        tabBarLabel: "Listings"
       }}
     />
     <Tabs.Screen
@@ -63,6 +65,7 @@ const AppStack = () => (
             color={focused ? color : colors.gray[400]}
           />
         ),
+        tabBarLabel: "Account"
       }}
     />
   </Tabs.Navigator>

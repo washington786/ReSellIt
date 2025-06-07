@@ -1,17 +1,24 @@
 import { View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+
 import {
   RButton,
+  RErrorMessage,
   RInput,
   RLoader,
   RLogo,
   RText,
   Scroller,
 } from "@/components/common";
+
 import { ILogin } from "@/interfaces/ILogin";
 import { Formik } from "formik";
 import { loginSchema } from "@/schemas/loginSchema";
 import { auth_styles } from "@/styles";
+import { login } from "@/api/auth";
+import { jwtDecode } from "jwt-decode";
+import { useAuthCtx } from "@/context/auth";
+import { saveSecurely } from "@/utils/storage";
 
 const initialValues: ILogin = {
   password: "",
@@ -19,6 +26,32 @@ const initialValues: ILogin = {
 };
 
 const LoginScreen = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { login: loginUser } = useAuthCtx();
+
+  async function handleLogin(values: ILogin) {
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await login({ email: values.email, password: values.password });
+      const decodedToken = jwtDecode(res);
+      loginUser(decodedToken as any);
+      saveSecurely({ key: "token", value: res });
+
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <Scroller>
       <View style={auth_styles.logo_con}>
@@ -26,7 +59,7 @@ const LoginScreen = () => {
       </View>
       <Formik
         initialValues={initialValues}
-        onSubmit={() => {}}
+        onSubmit={handleLogin}
         validationSchema={loginSchema}
       >
         {({
@@ -40,6 +73,11 @@ const LoginScreen = () => {
         }) => {
           return (
             <View style={auth_styles.content_con}>
+              {
+                error && <RErrorMessage error={error} />
+              }
+              {/* <RErrorMessage error={"Error"} /> */}
+
               <RInput
                 placeholder="Email"
                 icon={"mail"}

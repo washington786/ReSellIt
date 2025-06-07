@@ -53,6 +53,7 @@ const HomeScreen = () => {
                   "http://192.168.0.14:9000/",
                   "http://192.168.0.221:9000/"
                 ),
+                cache: "force-cache",
               }}
               style={{ borderRadius: 10, overflow: "hidden" }}
               onPress={() => onListDetails(item as any)}

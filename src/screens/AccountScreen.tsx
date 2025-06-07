@@ -7,17 +7,19 @@ import {
 } from "@/components/modules/application";
 import { accountStyles } from "@/styles";
 import useTransition from "@/hooks/useTransition";
+import { useAuthCtx } from "@/context/auth";
 
 const AccountScreen = () => {
   const { onMessages, onMyList } = useTransition();
+  const { logout, user } = useAuthCtx()
   return (
     <Scroller>
       <AccountItemsWrapper style={[accountStyles.con, accountStyles.spaceTop]}>
         <UserCard
           avatarImage=""
-          name="Daniel Honma"
-          description={"danielhonma@gmail.com"}
-          onPress={() => {}}
+          name={user.name}
+          description={user.email}
+          onPress={() => { }}
         />
       </AccountItemsWrapper>
 
@@ -26,7 +28,7 @@ const AccountScreen = () => {
         <AccountCard icon="mail" title="My Messages" onPress={onMessages} />
       </AccountItemsWrapper>
       <AccountItemsWrapper style={[accountStyles.con, accountStyles.spaceTop]}>
-        <AccountCard icon="log-out" title="Log Out" onPress={() => {}} />
+        <AccountCard icon="log-out" title="Log Out" onPress={logout} />
       </AccountItemsWrapper>
     </Scroller>
   );

@@ -17,7 +17,7 @@ import { listingSchema } from "@/schemas/listingSchema";
 import * as ImagePicker from "expo-image-picker";
 import { ImageSelectionList } from "@/components/modules/application";
 import useGetLocation from "@/hooks/useGetLocation";
-import { createList, createListing } from "@/api/listings";
+import { createListing } from "@/api/listings";
 import { listAddingData } from "@/utils/listAdding";
 
 const initialValues: IListing = {
@@ -93,7 +93,10 @@ const ListingScreen = () => {
           <>
             <Formik
               initialValues={initialValues}
-              onSubmit={(values) => handleCreateList(values)}
+              onSubmit={(values, { resetForm }) => {
+                handleCreateList(values);
+                resetForm();
+              }}
               validationSchema={listingSchema}
             >
               {({

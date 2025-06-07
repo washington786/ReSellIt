@@ -1,3 +1,3 @@
-# Constants.statusBar
+# Offline Support Features
 
-""this is for applying status bar heigh on different devices""
+# image and data cache for offline
