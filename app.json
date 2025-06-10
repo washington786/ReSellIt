@@ -20,7 +20,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.danielkarabo.ReSellIt"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -46,6 +52,12 @@
           "faceIDPermission": "Allow Resellit to access your Face ID biometric data."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "de6cc0ea-068a-4d29-a541-5386627c26a6"
+      }
+    },
+    "owner": "danielkarabo"
   }
 }

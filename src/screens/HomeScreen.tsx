@@ -1,13 +1,17 @@
 import { FlatList, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
-import { RLoader, RServerError, RWrapper } from "@/components/common";
+import { RLoader, RNotification, RServerError, RWrapper } from "@/components/common";
 import { Card } from "@/components/modules/application";
 import useTransition from "@/hooks/useTransition";
 import { fetchListings } from "@/api/listings";
 import useApi from "@/hooks/useApi";
+import useNotification from "@/hooks/useNotification";
 
 const HomeScreen = () => {
   const { onListDetails } = useTransition();
+
+  const { expoPushToken } = useNotification();
+  console.log(expoPushToken)
 
   const {
     data: listings,
@@ -60,6 +64,7 @@ const HomeScreen = () => {
             />
           );
         }}
+        ListFooterComponent={<RNotification title="Notification" />}
       />
     </RWrapper>
   );

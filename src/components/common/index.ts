@@ -8,6 +8,7 @@ import RLoader from "./RLoader";
 import RLogo from "./RLogo";
 import RModal from "./RModal";
 import RNetworkAlert from "./RNetworkAlert";
+import RNotification from "./RNotification";
 import RPicker from "./RPicker";
 import RServerError from "./RServerError";
 import RSwitch from "./RSwitch";
@@ -16,6 +17,7 @@ import RUpload from "./RUpload";
 import RWrapper from "./RWrapper";
 import SafeArea from "./SafeArea";
 import Scroller from "./Scroller";
+
 
 export {
   SafeArea,
@@ -35,5 +37,6 @@ export {
   RModal,
   RHeader,
   RNetworkAlert,
-  RErrorMessage
+  RErrorMessage,
+  RNotification
 };

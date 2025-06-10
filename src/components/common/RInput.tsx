@@ -1,14 +1,15 @@
-import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
+import { StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle } from "react-native";
 import React, { FC } from "react";
 import colors from "@/config/colors";
 import { Feather } from "@expo/vector-icons";
 
 interface props extends TextInputProps {
   icon?: any;
+  customStyle?: StyleProp<ViewStyle>
 }
 const RInput: FC<props> = (props) => {
   return (
-    <View style={styles.inputCon}>
+    <View style={[styles.inputCon, props.customStyle]}>
       {props.icon && (
         <Feather size={20} name={props.icon} color={colors.gray[400]} />
       )}

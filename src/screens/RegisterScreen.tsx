@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { StyleSheet, View } from "react-native";
+import React, { useState } from "react";
 import {
   RButton,
+  RErrorMessage,
   RInput,
   RLoader,
   RLogo,
@@ -12,6 +13,8 @@ import { auth_styles } from "@/styles";
 import { Formik } from "formik";
 import { IAccount } from "@/interfaces/IRegister";
 import { accountCreateSchema } from "@/schemas/accountSchema";
+import { register } from "@/api/auth";
+import { useAuthCtx } from "@/context/auth";
 
 const initialValues: IAccount = {
   email: "",
@@ -19,7 +22,24 @@ const initialValues: IAccount = {
   password: "",
 };
 
+
 const RegisterScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuthCtx()
+  const [error, setError] = useState("");
+  async function handleSubmit(values: IAccount) {
+    try {
+      const res = await register(values);
+      console.log("reg response", res);
+      login(res)
+    } catch (error: any) {
+      setError(error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <Scroller>
       <View style={auth_styles.logo_con}>
@@ -27,7 +47,7 @@ const RegisterScreen = () => {
       </View>
       <Formik
         initialValues={initialValues}
-        onSubmit={() => {}}
+        onSubmit={handleSubmit}
         validationSchema={accountCreateSchema}
       >
         {({
@@ -41,6 +61,9 @@ const RegisterScreen = () => {
         }) => {
           return (
             <View style={auth_styles.content_con}>
+              {error &&
+                <RErrorMessage error={error.toString()} />
+              }
               <RInput
                 placeholder="Name"
                 icon={"user"}

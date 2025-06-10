@@ -10,7 +10,7 @@ const schema = {
   password: Joi.string().required().min(5),
 };
 
-router.post("/", validateWith(schema), (req, res) => {
+router.post("/", (req, res) => {
   const { name, email, password } = req.body;
   if (usersStore.getUserByEmail(email))
     return res
